@@ -1,8 +1,15 @@
+$(document).ready(function() {
+  $("#ChallongeData").focus(function() {
+    $(this).select();
+  });
+});
+
+
 // Reads player list and setting from the user.
 // Seeds the bracket and returns the pools structure and region spread diagnostics if required.
 // Calls a function to display the seeding results for review and manual entry into Challonge.
 function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_size, id_region_seeding,
-                     id_region_prefix, id_InputPlayerData, id_RegionWarning, id_Output, id_Matchups, id_RegionCounts, 
+                     id_region_prefix, id_InputPlayerData, id_RegionWarning, id_Output, id_Matchups, id_RegionCounts,
                      id_SeedOrder, id_Alphabetical, id_ChallongeInfo, id_ChallongeData, id_Challonge) {
    // ***** Declaring variables. *****
    // Arrays.
@@ -89,8 +96,8 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
       delimiter = "\t";
    } // end if delimiter
 
-   // Looping through the data and splitting it into three entries: Name, Region, Rank.   
-   for (i = 0; i < DataArray.length; i++) {      
+   // Looping through the data and splitting it into three entries: Name, Region, Rank.
+   for (i = 0; i < DataArray.length; i++) {
       str_PlayerData = DataArray[i].split(delimiter,3);
       PlayerName.push(str_PlayerData[0]);
       if (str_PlayerData.length > 1){
@@ -169,7 +176,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
 
          // Finding the total number of players per region.
          RegionTotals = InitialiseArray(n_regions + 1, 1, 0);
-         OrderedRegionTotals = InitialiseArray(n_regions + 1, 2, 0);         
+         OrderedRegionTotals = InitialiseArray(n_regions + 1, 2, 0);
 
          for (i = 0; i < n_players; i++){
             if (PlayerRank[i] == r){
@@ -177,7 +184,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                RegionTotals[j] = RegionTotals[j] + 1;
             } // end if PlayerRank[i]
          } // end for i
-         
+
          // Sorting the regional totals from largest to smallest.
          // Sort order is reversed for the final rank.
 
@@ -233,8 +240,8 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                   } // end if PlayerRank
                } // end for j
             } // end if OrderedRegionTotals[i][1]
-            
-            // Preparing the initial region counters across previous ranks. 
+
+            // Preparing the initial region counters across previous ranks.
             // Also counts any outstanding regional spread exceptions.
 
             RegionCounts = InitialiseArray(BracketSize, BracketLayers + 1, 0);
@@ -245,9 +252,9 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                   if (SeededRegions[j] == CurrentRegion){
                     // Updating the regional counters.
                     RegionCounts = UpdateRegionCounts(RegionCounts, BracketLayers, j, 1);
-                  } // end if SeededRegions                  
+                  } // end if SeededRegions
                } // end for j
-               // Checking the differences between the counters at each level. 
+               // Checking the differences between the counters at each level.
                // If the differences between any 2 counters on the same level exceed 1 then
                // the regional spread is not optimal. This is stored for reference so that seedings
                // for this rank can try to improve the overall spread.
@@ -257,10 +264,10 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
             if (bln_region_seeding == false){
                PrevExceptions = 0;
             } // end if bln_regional_seeding
-            // Setting the redraw threshhold. If the total number of redraws exceeds this number 
+            // Setting the redraw threshhold. If the total number of redraws exceeds this number
             // then redrawing will be disabled.
             // The probability of failing to draw any one of the available seeds is set to 1 x 10^(-7).
-            if (nUnseeded > 1){               
+            if (nUnseeded > 1){
                RedrawThreshhold = Math.ceil(Math.log(0.0000001) / Math.log((nUnseeded-1)/nUnseeded));
             } else {
                RedrawThreshhold = 1;
@@ -271,7 +278,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                bln_Redraw = true;
 
                // Redraw loop. this will repeat until the regional spread is acceptable or the redraw
-               // threshhold has been reached.           
+               // threshhold has been reached.
                while (bln_Redraw == true){
                   // Counting the redraws.
                   RedrawCount = RedrawCount + 1;
@@ -281,8 +288,8 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                   Seed = RemainingSeeds[Draw] - 1;
                   // Updating the regional counters.
                   RegionCounts = UpdateRegionCounts(RegionCounts, BracketLayers, Seed, 1);
-      
-                  // Checking the differences between the counters at each level. 
+
+                  // Checking the differences between the counters at each level.
                   // If the differences between any 2 counters on the same level exceed 1 then
                   // the regional spread is not optimal.
                   ExceptionCount = CountExceptions(RegionCounts, BracketLayers);
@@ -290,7 +297,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
                   // Disabling regional spread checks.
                   if (bln_region_seeding == false){
                      ExceptionCount = 0;
-                  } // end if bln_regional_seeding               
+                  } // end if bln_regional_seeding
                   // Test for the RedrawThreshhold.
                   if (RedrawCount > RedrawThreshhold){
                      bln_Redraw = false;
@@ -336,7 +343,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
          n_pools = Math.pow(2, Math.log2(n_pools) + 1);
          PoolSize = Math.ceil(Math.pow(2, Math.ceil(Math.log2(n_players / n_pools))));
       } // end while PoolSize
-   } 
+   }
    // If the final combination of pools creates a larger global bracket than necessary
    // the global BracketSize is increased accordingly.
    if (BracketSize < (n_pools * PoolSize)) {
@@ -344,7 +351,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
       BracketLayers = Math.log2(BracketSize);
    } // end if BracketSize
 
-   // Building the seed numbers for the final global bracket size. The order matches 
+   // Building the seed numbers for the final global bracket size. The order matches
    // the OzHadou double elimination bracket layout, which should be consistent with
    // Challonge.
    SeedAddressGlobal = BuildBracketSeedValues(BracketSize);
@@ -356,15 +363,15 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
       for (j = 0; j < PoolSize; j++) {
          m = PoolSize * i + (j + 1);
          SeedAddressesByPool[j][i] = SeedAddressGlobal[m - 1];
-      } // end for j 
-      // Inverting the order where necessary so that the highest seeded player in each pool appears 
+      } // end for j
+      // Inverting the order where necessary so that the highest seeded player in each pool appears
       // at the top of the bracket for that pool. This is a display adjustment only.
-      if (SeedAddressesByPool[0][i] > SeedAddressesByPool[PoolSize - 1][i]) {      
+      if (SeedAddressesByPool[0][i] > SeedAddressesByPool[PoolSize - 1][i]) {
          for (k = 0; k < (PoolSize / 2); k++) {
             int_temp = SeedAddressesByPool[k][i];
             SeedAddressesByPool[k][i] = SeedAddressesByPool[PoolSize - 1 - k][i];
             SeedAddressesByPool[PoolSize - k - 1][i] = int_temp;
-         } //end for k   
+         } //end for k
       } // end if SeedAddressesByPool
    } // end for i
 
@@ -381,16 +388,17 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    } // end for i
 
    // Setting background colours for each region.
+   var colours = GenerateColourList(n_regions);
    var css = document.createElement('style');
    css.type = 'text/css';
 
    str_styles = "td.rgn"
-   str_styles = str_styles.concat(0, "{background-color: ", ColourList(0), ";} ");
+   str_styles = str_styles.concat(0, "{background-color: ", ColourList(colours, 0), ";} ");
 
    for (i = 1; i < n_regions; i++) {
-      str_styles = str_styles.concat("td.rgn", i, "{background-color: ", ColourList(i), ";} ");
-   } // end for i 
- 
+      str_styles = str_styles.concat("td.rgn", i, "{background-color: ", ColourList(colours, i), ";} ");
+   } // end for i
+
    if (css.styleSheet) {
       css.styleSheet.cssText = str_styles;
    } else {
@@ -400,18 +408,18 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    document.getElementsByTagName("head")[0].appendChild(css);
 
    // Displaying the seeding results along with diagnostics and output for pasting into Challonge.
-   DisplayResults(n_regions, BracketSize, BracketLayers, n_players, SeededRegions, bln_region_seeding, RegionList, n_pools, 
+   DisplayResults(n_regions, BracketSize, BracketLayers, n_players, SeededRegions, bln_region_seeding, RegionList, n_pools,
                   PoolSize, SeedIDsPerPool, PlayerRegionID, PlayerRegion, PlayerName, PlayerRank, MaxRank, bln_region_prefix,
-                  id_RegionWarning, id_Output, id_Matchups, id_RegionCounts, id_SeedOrder, id_Alphabetical, id_ChallongeInfo, 
+                  id_RegionWarning, id_Output, id_Matchups, id_RegionCounts, id_SeedOrder, id_Alphabetical, id_ChallongeInfo,
                   id_ChallongeData, id_Challonge);
 
 } // end function
 
 
 // Displays the seeded players along with various diagnostics and output for pasting into Challonge.
-function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, SeededRegions, bln_region_seeding, RegionList, n_pools, 
-                        PoolSize, SeedIDsPerPool, PlayerRegionID, PlayerRegion, PlayerName, PlayerRank, MaxRank, bln_region_prefix, 
-                        id_RegionWarning, id_Output, id_Matchups, id_RegionCounts, id_SeedOrder, id_Alphabetical, id_ChallongeInfo, 
+function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, SeededRegions, bln_region_seeding, RegionList, n_pools,
+                        PoolSize, SeedIDsPerPool, PlayerRegionID, PlayerRegion, PlayerName, PlayerRank, MaxRank, bln_region_prefix,
+                        id_RegionWarning, id_Output, id_Matchups, id_RegionCounts, id_SeedOrder, id_Alphabetical, id_ChallongeInfo,
                         id_ChallongeData, id_Challonge) {
    // ***** Declaring variables. *****
    // Arrays.
@@ -444,7 +452,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    var m = 0;
    var n = 0;
    // Booleans.
-   // ***** End declaring variables. *****  
+   // ***** End declaring variables. *****
 
    // Goes back through the entire bracket and checks the spread for each region.
    // Any region with a suboptimal spread will return an error message.
@@ -458,7 +466,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             RegionCounts = UpdateRegionCounts(RegionCounts, BracketLayers, j, 1);
          } // end if SeededRegions
       } // end for j
- 
+
       // Count the exceptions.
       ExceptionCount = CountExceptions(RegionCounts, BracketLayers);
       // Disabling regoinal spread checks.
@@ -471,10 +479,10 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             RegionErrorList = RegionList[i];
          } else {
             RegionErrorList = RegionErrorList.concat(", ", RegionList[i]);
-         } // end if else      
+         } // end if else
          str_RegionErrors = "<b>WARNING</b> - these regions are not perfectly spread: ";
          str_RegionErrors = str_RegionErrors.concat("<b>", RegionErrorList, "</b>.");
-         str_RegionErrors = str_RegionErrors.concat("<br><br>Check the match-up data and re-seed if necessary.");           
+         str_RegionErrors = str_RegionErrors.concat("<br><br>Check the match-up data and re-seed if necessary.");
       }// end if ExceptionCount
    } // end for i
 
@@ -490,12 +498,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    str_Matchups = str_Matchups.concat("</tr></thead><tbody><tr>");
    for (i = 0; i < n_pools; i++) {
       str_Matchups = str_Matchups.concat("<td><table class=\"pool\">")
-      for (j = 0; j < PoolSize; j++) {      
+      for (j = 0; j < PoolSize; j++) {
          m  = SeedIDsPerPool[j][i];
          str_tr_class = "<tr class=\"match_bottom\">";
          if (m < 0) {
             str_td_class = "<td>";
-         } else {            
+         } else {
             str_td_class = "<td class=\"rgn";
             str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");
          } //end if else
@@ -503,7 +511,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
          if (j % 2 == 0){
             str_tr_class = "<tr class=\"match_top\">";
          } // end if j
-                 
+
          if (j == (PoolSize / 2) && PoolSize > 2){
             str_tr_class = "<tr class=\"half_top\">";
          } else {
@@ -516,8 +524,8 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 
          str_Matchups = str_Matchups.concat(str_td_class, SeedAddressPool[j], ")</td>", str_td_class);
          if (m < 0) {
-            str_Matchups = str_Matchups.concat("</td><td>---</td><td>");      
-         } else {    
+            str_Matchups = str_Matchups.concat("</td><td>---</td><td>");
+         } else {
             PoolRegionCounts[PlayerRegionID[m]][i] = PoolRegionCounts[PlayerRegionID[m]][i] + 1;
             str_Matchups = str_Matchups.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
             if (PlayerRank[m] <= MaxRank) {
@@ -529,7 +537,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    str_Matchups = str_Matchups.concat("</table></td>");
    } // end for i
    str_Matchups = str_Matchups.concat("</tr></tbody></table>");
-   
+
    Row_Sums = InitialiseArray(n_regions + 1, 1, 0);
    Col_Sums = InitialiseArray(n_pools, 1, 0);
 
@@ -555,7 +563,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    str_RegionCounts = str_RegionCounts.concat("<tr><td><b>Totals</b></td>");
    for (j = 0; j < n_pools; j++) {
          str_RegionCounts = str_RegionCounts.concat("<td>", Col_Sums[j], "</td>");
-      } //end for j   
+      } //end for j
    str_RegionCounts = str_RegionCounts.concat("<td>", Row_Sums[n_regions], "</td></tr></table>");
 
 
@@ -573,20 +581,20 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    } // end for i
    // Tables of players for each pool.
    str_SeedOrder = str_SeedOrder.concat("</tr></thead><tbody><tr>");
-   for (i = 0; i < n_pools; i++) {      
+   for (i = 0; i < n_pools; i++) {
       str_SeedOrder = str_SeedOrder.concat("<td><table class=\"pool\">")
       n = 0;
-      for (j = 0; j < PoolSize; j++) {      
+      for (j = 0; j < PoolSize; j++) {
          k = SeedAddressPool[j];
          m  = SeedIDsPerPool[k-1][i];
 
          if (m >= 0) {
             str_td_class = "<td class=\"rgn";
-            str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");                
+            str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");
             str_SeedOrder = str_SeedOrder.concat("<tr>");
             // Storing pool seed for the current player for use in alphabetical order display.
             PlayerPoolSeed[m] = j + 1;
-            str_SeedOrder = str_SeedOrder.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);  
+            str_SeedOrder = str_SeedOrder.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);
             str_SeedOrder = str_SeedOrder.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
 
             AlphabeticalOrder[j][i] = "[";
@@ -621,7 +629,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    } // end for i
 
    AlphabeticalByPool = Initialise2DArray(n_pools, PoolSize, -1);
-   
+
    for (i = 0; i < n_pools; i++) {
       AlphabeticalCurrentPool = InitialiseArray(AlphabeticalOrder.length, 1, "");
       for (j = 0; j < AlphabeticalCurrentPool.length; j++) {
@@ -630,7 +638,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
       AlphabeticalCurrentPool.sort(charOrdA);
       for (j = 0; j < AlphabeticalCurrentPool.length; j++) {
          AlphabeticalOrder[j][i] = AlphabeticalCurrentPool[j];
-      } // end for j      
+      } // end for j
    } // end for i
 
    // Table headers.
@@ -640,10 +648,10 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    } // end for i
    // Tables of players for each pool.
    str_Alphabetical = str_Alphabetical.concat("</tr></thead><tbody><tr>");
-   for (i = 0; i < n_pools; i++) {      
+   for (i = 0; i < n_pools; i++) {
       str_Alphabetical = str_Alphabetical.concat("<td><table class=\"pool\">")
       n = 0;
-      for (j = 0; j < AlphabeticalOrder.length; j++) {      
+      for (j = 0; j < AlphabeticalOrder.length; j++) {
          m  = PlayerRegionName.indexOf(AlphabeticalOrder[j][i]);
 
          if (m >= 0) {
@@ -651,7 +659,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");
             str_Alphabetical = str_Alphabetical.concat("<tr>");
 
-            str_Alphabetical = str_Alphabetical.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);  
+            str_Alphabetical = str_Alphabetical.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);
             str_Alphabetical = str_Alphabetical.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
 
             if (PlayerRank[m] <= MaxRank) {
@@ -681,8 +689,8 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 
    // Building the list of players for Challonge.
    n = 0;
-   for (i = 0; i < n_pools; i++) {         
-      for (j = 0; j < AlphabeticalOrder.length; j++) {      
+   for (i = 0; i < n_pools; i++) {
+      for (j = 0; j < AlphabeticalOrder.length; j++) {
          k = SeedAddressPool[j];
          m  = SeedIDsPerPool[k-1][i];
 
@@ -693,7 +701,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_ChallongeData = str_ChallongeData.concat(PlayerName[m], "\n");
           } else {
             n = n + 1;
-            str_ChallongeData = str_ChallongeData.concat("Bye_", n, "\n"); 
+            str_ChallongeData = str_ChallongeData.concat("Bye_", n, "\n");
           } // end if else
       } // end for j
    } // end for i
@@ -720,10 +728,10 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 } // end function
 
 
-// Initialises an array filled with "value". 
+// Initialises an array filled with "value".
 // If ncols is 1 or less the array will be a vector.
 function InitialiseArray(nrows, ncols, value) {
-   // Declaring variables.      
+   // Declaring variables.
    var InitArray = [];
    var i = 0;
    var j = 0;
@@ -741,7 +749,7 @@ function InitialiseArray(nrows, ncols, value) {
 } // end function
 
 
-// Initialises a 2D array filled with "value". 
+// Initialises a 2D array filled with "value".
 // Forces 2D array structure.
 function Initialise2DArray(nrows, ncols, value) {
    // Declaring variables.
@@ -752,7 +760,7 @@ function Initialise2DArray(nrows, ncols, value) {
    for(i = 0; i < nrows; i++){
       InitArray.push([]);
    } // end for i
-   
+
 
    for(i = 0; i < nrows; i++){
       for(j = 0; j < ncols; j++){
@@ -788,7 +796,7 @@ function CountExceptions(RegionCounts, BracketLayers) {
    var m = 0;
    var n = 0;
    var absdiff = 0;
-   
+
    for (k = 1; k <= BracketLayers; k++){
       for (m = 0; m < Math.pow(2,k); m++){
          for (n = m + 1; n < Math.pow(2,k); n++){
@@ -814,7 +822,7 @@ function BuildBracketSeedValues(BracketSize) {
    // Establishing address arrays.
    SeedAddressTmp = InitialiseArray(BracketSize, 1, 0);
    SeedAddressGlobal = InitialiseArray(BracketSize, 1, 0);
-   
+
    SeedAddressTmp[0] = 1;
    // Special case where there is only 1 player in the bracket.
    if (BracketLayers == 0) {
@@ -835,41 +843,37 @@ function BuildBracketSeedValues(BracketSize) {
          SeedAddressTmp[j - 1] = SeedAddressGlobal[j - 1];
       } // next j
    } // next i
-  
+
    return SeedAddressGlobal;
 
 } // end function
 
+function GenerateColourList(numColours) {
+  var spectrum = 360;
+  var offset = 200;
+  var i = spectrum / numColours; // distribute the colors evenly on the hue range
+  var colours = []; // hold the generated colors
+  for (var x=0; x<numColours; x++)
+  {
+      var hue = offset + i * x;
+      if (hue > spectrum) {
+        hue -= spectrum;
+      }
+      //colours.push(hsvToRgb(hue, 25, 98));
+      colours.push(hsvToRgb(hue, GetRandomNumber(2, 30), GetRandomNumber(92, 98)));
+  }
+  return colours;
+}
+
+function GetRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 // Builds a list of unique colours. Used to highlight players by region in the output tables.
-function ColourList(i) {
-   // Declaring variables.
-   var Colours = [];
-   
-   Colours.push("#86BCFF"); // blue
-   Colours.push("#8BFEA8"); // green
-   Colours.push("#FF8E8E"); // red
-   Colours.push("#FFF284"); // yellow
-   Colours.push("#AE70ED"); // purple
+function ColourList(Colours, i) {
+  var colour = Colours[i];
 
-   Colours.push("#FFBD82"); // orange
-   Colours.push("#D3D3D3"); // gray
-   Colours.push("#FE98F1"); // pink
-   Colours.push("#C87C5B"); // brown
-   Colours.push("#4FBDDD"); // blue
-
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-   Colours.push("");
-
-   return Colours[i];   
+   return "rgb("+colour[0]+","+colour[1]+","+colour[2]+")";
 } // end function
 
 
@@ -879,7 +883,7 @@ function charOrdA(a, b){
    a = a.toLowerCase(); b = b.toLowerCase();
    if (a > b) return 1;
    if (a < b) return -1;
-return 0; 
+return 0;
 } // end function
 
 // Descending order.
@@ -887,5 +891,85 @@ function charOrdD(a, b) {
    a = a.toLowerCase(); b = b.toLowerCase();
    if (a < b) return 1;
    if (a > b) return -1;
-   return 0; 
+   return 0;
 } // end function
+
+
+/**
+ * HSV to RGB color conversion
+ *
+ * H runs from 0 to 360 degrees
+ * S and V run from 0 to 100
+ *
+ * Ported from the excellent java algorithm by Eugene Vishnevsky at:
+ * http://www.cs.rit.edu/~ncs/color/t_convert.html
+ */
+function hsvToRgb(h, s, v) {
+	var r, g, b;
+	var i;
+	var f, p, q, t;
+
+	// Make sure our arguments stay in-range
+	h = Math.max(0, Math.min(360, h));
+	s = Math.max(0, Math.min(100, s));
+	v = Math.max(0, Math.min(100, v));
+
+	// We accept saturation and value arguments from 0 to 100 because that's
+	// how Photoshop represents those values. Internally, however, the
+	// saturation and value are calculated from a range of 0 to 1. We make
+	// That conversion here.
+	s /= 100;
+	v /= 100;
+
+	if(s == 0) {
+		// Achromatic (grey)
+		r = g = b = v;
+		return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+	}
+
+	h /= 60; // sector 0 to 5
+	i = Math.floor(h);
+	f = h - i; // factorial part of h
+	p = v * (1 - s);
+	q = v * (1 - s * f);
+	t = v * (1 - s * (1 - f));
+
+	switch(i) {
+		case 0:
+			r = v;
+			g = t;
+			b = p;
+			break;
+
+		case 1:
+			r = q;
+			g = v;
+			b = p;
+			break;
+
+		case 2:
+			r = p;
+			g = v;
+			b = t;
+			break;
+
+		case 3:
+			r = p;
+			g = q;
+			b = v;
+			break;
+
+		case 4:
+			r = t;
+			g = p;
+			b = v;
+			break;
+
+		default: // case 5:
+			r = v;
+			g = p;
+			b = q;
+	}
+
+	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
