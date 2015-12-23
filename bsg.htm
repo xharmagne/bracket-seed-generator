@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>OzHadou | Bracket Seed Generator</title>
+<meta charset="utf-8">
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+</script>
+<![endif]-->
+
+<style>
+body {font-family: Verdana, sans-serif; font-size:0.8em;}
+header, nav, section, article, footer
+{border:1px solid grey; margin:5px; padding:8px;}
+nav ul {margin:0; padding:0;}
+nav ul li {display:inline; margin:5px;}
+
+table.pool{
+    white-space:nowrap;
+    width: 100%;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+
+table.region{
+    white-space:nowrap;
+    width: 100%;
+    border: 2px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+tr.match_top{
+    border: 1px dotted black;
+    border-bottom: none;
+}
+
+tr.match_bottom{
+    border: 1px dotted black;
+    border-top: none;
+}
+
+tr.half_top{
+    border: 1.5px solid black;
+    border-bottom: none;
+}
+
+tr.quarter_top{
+    border: 1px dashed black;
+    border-bottom: none;
+}
+
+table.bracket{
+    border: 0px;
+    width: 100%;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Bracket Seed Generator - Online Edition</h1>
+</header>
+
+<section>
+<h2>Enter Player Data</h2>
+<form>
+  <table>
+  <tr>
+  <td><table class="data">
+      <tr>
+         <td>Delimiter:</td>
+         <td><input list="delimiter_list" type="text" id="delimiter" value="tab" tabindex="1">
+           <datalist id="delimiter_list">
+              <option value="tab">
+              <option value=",">
+              <option value=".">
+              <option value=" ">
+           </datalist></td>
+       </tr>
+       <tr>
+          <td>Default Region:</td>
+          <td><input type="text" id="default_region" tabindex="2"></td>
+       </tr>
+       <tr>
+          <td></td>
+          <td><i>(assigned to blanks)</i></td>
+       <tr>
+       </tr>
+          <td>Minimum Pools:</td>
+          <td><select type="text" id="min_pools" value=1 tabindex="3">
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=4>4</option>
+                <option value=8>8</option>
+                <option value=16>16</option>
+                <option value=32>32</option>
+             </select></td>
+       </tr>
+       <tr>
+          <td>Maximum Pool Size:</td>
+          <td><select type="text" id="max_pool_size" tabindex="4">
+                <option value="NONE">NONE</option>
+                <option value=2>2</option>
+                <option value=4>4</option>
+                <option value=8>8</option>
+                <option value=16>16</option>
+                <option value=32 selected="selected">32</option>
+                <option value=64>64</option>
+             </select></td>
+       </tr>
+       <tr>
+          <td>Region Seeding:</td>
+          <td><select type="text" id="region_seeding" tabindex="5">
+                <option value="On" selected="selected">On</option>
+                <option value="Off">Off</option>
+             </select></td>
+       </tr>
+       <tr>
+          <td>Prefix by Region:</td>
+          <td><select type="text" id="region_prefix" tabindex="6">
+                <option value="On" selected="selected">On</option>
+                <option value="Off">Off</option>
+             </select></td>
+       </tr>
+       <tr>
+          <td><br><br></td>
+       </tr>
+       <tr rowspan="10">
+          <td><input type="button" value="Generate Bracket Seeds" onclick="SeedPlayers('delimiter', 'default_region', 'min_pools', 'max_pool_size', 'region_seeding', 'region_prefix', 'InputPlayerData', 'RegionWarning', 'Output', 'Matchups', 'RegionCounts', 'SeedOrder', 'Alphabetical', 'ChallongeInfo', 'ChallongeData', 'Challonge')" tabindex="8"></td>
+          <td></td>
+       </tr>
+       <tr><td><br><br><br><br><br>
+               <br><br><br><br><br>
+               <br><br><br></td>
+           <td></td>
+       </tr>
+    </table></td>
+  <td><strong>Players - </strong> <i>Name,Region,Seed</i>
+      <br><br>
+      <textarea id="InputPlayerData" rows="30" cols="50" tabindex="7"></textarea>
+  </td>
+  </tr>
+  </table>
+  <br><br>
+</form>
+
+</section>
+
+
+<section style="display:none" id="Output">
+<h2>Pool Assignments</h2>
+<h3>Match-Ups</h3>
+<p id="RegionWarning"></p>
+<div id="Matchups"></div>
+<h3>Region Counts</h3>
+<div id="RegionCounts"></div>
+<h3>Players by Seed</h3>
+<div id="SeedOrder"></div>
+<h3>Players by Region & Name</h3>
+<div id="Alphabetical"></div>
+</section>
+
+
+<section style="display:none" id="Challonge">
+<h2>Challonge Data</h2>
+<p id="ChallongeInfo"></p>
+<p ><i>Click <b>"Add in Bulk"</b> in your Challonge bracket then copy and paste the text bellow into Challonge.</i></p>
+<textarea id="ChallongeData" rows="30" cols="50" tabindex="9" readonly></textarea>
+</section>
+
+
+<section style="display:none" id="Debug">
+<h2>DEBUG</h2>
+<p id="DEBUG1"></p>
+<p id="DEBUG2"></p>
+<p id="DEBUG3"></p>
+</section>
+
+<footer>
+<p>&copy; 2015 OzHadou. All rights reserved.</p>
+</footer>
+
+<script type="text/javascript" src="bsg.js"></script>
+
+</body>
+</html>

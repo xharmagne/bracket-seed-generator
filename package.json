@@ -1,0 +1,11 @@
+{
+  "name": "bracket-seed-generator",
+  "version": "1.0.0",
+  "description": "OzHadou Bracket Seed Generator OE",
+  "main": "bsg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "OzHadou",
+  "license": "ISC"
+}
