@@ -64,18 +64,8 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    var default_region = document.getElementById(id_default_region).value;
    var min_pools = document.getElementById(id_min_pools).value;
    var max_pools_size = document.getElementById(id_max_pool_size).value;
-   var str_region_seeding = document.getElementById(id_region_seeding).value;
-   var str_region_prefix = document.getElementById(id_region_prefix).value;
-   var bln_region_seeding = true;
-   var bln_region_prefix = true;
-
-   if(str_region_seeding == "Off"){
-      bln_region_seeding = false;
-   } // end if str_region_seeding
-
-   if(str_region_prefix == "Off"){
-      bln_region_prefix = false;
-   } // end if str_region_prefix
+   var bln_region_seeding = document.getElementById(id_region_seeding).checked;
+   var bln_region_prefix = document.getElementById(id_region_prefix).checked;
 
    // Reading the player data from a text area.
    var TextboxData = document.getElementById(id_InputPlayerData).value;
@@ -91,8 +81,10 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    // Counting the number of players.
    n_players = DataArray.length;
 
-   // Setting the tab delimiter character.
-   if (delimiter == "tab") {
+   // Setting the tab delimiter character
+   // Either tab or comma - guess based on contents of first line.
+   delimiter = ",";
+   if (DataArray[i].indexOf(delimiter) < 0) {
       delimiter = "\t";
    } // end if delimiter
 
@@ -108,7 +100,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
       if (str_PlayerData.length > 2){
          PlayerRank.push(str_PlayerData[2]);
       } else {
-         PlayerRank.push(-1);
+         PlayerRank.push("");
       } // end if else
       if (PlayerRank[i].trim() == ""){
          PlayerRank[i] = -1;
@@ -482,7 +474,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
          } // end if else
          str_RegionErrors = "<b>WARNING</b> - these regions are not perfectly spread: ";
          str_RegionErrors = str_RegionErrors.concat("<b>", RegionErrorList, "</b>.");
-         str_RegionErrors = str_RegionErrors.concat("<br><br>Check the match-up data and re-seed if necessary.");
+         str_RegionErrors = str_RegionErrors.concat("<br>Check the match-up data and re-seed if necessary.");
       }// end if ExceptionCount
    } // end for i
 
@@ -680,11 +672,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 
    // Providing directions for setting up pools in Challonge.
    if (n_pools > 1) {
-      str_ChallongeInfo = "<i>This tournament requires pools in Challonge.";
-      str_ChallongeInfo = str_ChallongeInfo.concat("<ul><li>Go to the <b>Settings</b> page.</li>");
+      str_ChallongeInfo = "This tournament requires pools in Challonge.";
+      str_ChallongeInfo = str_ChallongeInfo.concat("<ol><li>Go to the <b>Settings</b> page.</li>");
       str_ChallongeInfo = str_ChallongeInfo.concat("<li>Select <b>Two Stage Tournament</b>.</li>");
       str_ChallongeInfo = str_ChallongeInfo.concat("<li>Enter <b>", AlphabeticalOrder.length, "</b> for the number of participants per group.</li>");
-      strChallonge_Info = str_ChallongeInfo.concat("<li>Enter <b>2</b> for the number of participants to advance from each group.</li></ul>");
+      strChallonge_Info = str_ChallongeInfo.concat("<li>Enter <b>2</b> for the number of participants to advance from each group.</li>");
+      str_ChallongeInfo = str_ChallongeInfo.concat("<li>Click <b>\"Add in Bulk\"</b> in your Challonge bracket then copy and paste the text bellow into Challonge.</li></ol>")
    } // end if n_pools
 
    // Building the list of players for Challonge.
@@ -724,6 +717,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    OutputElement = document.getElementById(id_Challonge);
    OutputElement.style.display = "block";
 
+   scrollToElement(id_Output);
 
 } // end function
 
@@ -972,4 +966,23 @@ function hsvToRgb(h, s, v) {
 	}
 
 	return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+}
+
+function toggleOptions() {
+
+  var optionsToggleText = "Hide options";
+  var optionsActive = ($("#optionsToggle").attr("data-options-active") === "true");
+  if (optionsActive) {
+    optionsToggleText = "Show more options";
+  }
+
+  optionsActive = !optionsActive;
+  $("#optionsToggle").attr("data-options-active", optionsActive);
+  $("#optionsToggle").text(optionsToggleText);
+
+  $("#options").slideToggle();
+}
+
+function scrollToElement(id) {
+  $("html,body").animate({scrollTop:$("#"+id).offset().top},"500");
 }

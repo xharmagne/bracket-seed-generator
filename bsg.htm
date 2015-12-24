@@ -18,116 +18,148 @@
 </head>
 
 <body class="page-id-5846">
+<div class="content-container row medium-9 large-7 columns">
+</div>
+<div class="bracket-container row medium-12 columns">
 
 <header>
 <h1>Bracket Seed Generator - Online Edition</h1>
 </header>
 
 <section>
-<h2>Enter Player Data</h2>
 <form>
-  <table>
-  <tr>
-  <td><table class="data">
-      <tr>
-         <td>Delimiter:</td>
-         <td><input list="delimiter_list" type="text" id="delimiter" value="tab" tabindex="1">
-           <datalist id="delimiter_list">
-              <option value="tab">
-              <option value=",">
-              <option value=".">
-              <option value=" ">
-           </datalist></td>
-       </tr>
-       <tr>
-          <td>Default Region:</td>
-          <td><input type="text" id="default_region" tabindex="2"></td>
-       </tr>
-       <tr>
-          <td></td>
-          <td><i>(assigned to blanks)</i></td>
-       <tr>
-       </tr>
-          <td>Minimum Pools:</td>
-          <td><select type="text" id="min_pools" value=1 tabindex="3">
-                <option value=1>1</option>
-                <option value=2>2</option>
-                <option value=4>4</option>
-                <option value=8>8</option>
-                <option value=16>16</option>
-                <option value=32>32</option>
-             </select></td>
-       </tr>
-       <tr>
-          <td>Maximum Pool Size:</td>
-          <td><select type="text" id="max_pool_size" tabindex="4">
-                <option value="NONE">NONE</option>
-                <option value=2>2</option>
-                <option value=4>4</option>
-                <option value=8>8</option>
-                <option value=16>16</option>
-                <option value=32 selected="selected">32</option>
-                <option value=64>64</option>
-             </select></td>
-       </tr>
-       <tr>
-          <td>Region Seeding:</td>
-          <td><select type="text" id="region_seeding" tabindex="5">
-                <option value="On" selected="selected">On</option>
-                <option value="Off">Off</option>
-             </select></td>
-       </tr>
-       <tr>
-          <td>Prefix by Region:</td>
-          <td><select type="text" id="region_prefix" tabindex="6">
-                <option value="On" selected="selected">On</option>
-                <option value="Off">Off</option>
-             </select></td>
-       </tr>
-       <tr>
-          <td><br><br></td>
-       </tr>
-       <tr rowspan="10">
-          <td><input type="button" value="Generate Bracket Seeds" onclick="SeedPlayers('delimiter', 'default_region', 'min_pools', 'max_pool_size', 'region_seeding', 'region_prefix', 'InputPlayerData', 'RegionWarning', 'Output', 'Matchups', 'RegionCounts', 'SeedOrder', 'Alphabetical', 'ChallongeInfo', 'ChallongeData', 'Challonge')" tabindex="8"></td>
-          <td></td>
-       </tr>
-       <tr><td><br><br><br><br><br>
-               <br><br><br><br><br>
-               <br><br><br></td>
-           <td></td>
-       </tr>
-    </table></td>
-  <td><strong>Players - </strong> <i>Name,Region,Seed</i>
-      <br><br>
-      <textarea id="InputPlayerData" rows="30" cols="50" tabindex="7"></textarea>
-  </td>
-  </tr>
-  </table>
-  <br><br>
+
+<div class="row main-options">
+  <div class="medium-3 columns">
+      <label for="min_pools">Minimum number of pools</label>
+      <select type="text" id="min_pools" value=1>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=4>4</option>
+            <option value=8>8</option>
+            <option value=16>16</option>
+            <option value=32>32</option>
+       </select>
+  </div>
+  <div class="medium-3 columns end">
+    <label for="max_pool_size">Maximum pool size</label>
+    <select type="text" id="max_pool_size">
+          <option value="NONE">N/A</option>
+          <option value=2>2</option>
+          <option value=4>4</option>
+          <option value=8>8</option>
+          <option value=16>16</option>
+          <option value=32 selected="selected">32</option>
+          <option value=64>64</option>
+     </select>
+  </div>
+</div>
+
+
+<a id="optionsToggle" href="#" data-options-active="false" onclick="toggleOptions(this);">Show more options</a>
+
+<div class="options-container">
+<div id="options" style="display:none;" class="row">
+  <div class="medium-3 columns">
+    <label>Region seeding</label>
+    <div class="switch">
+      <input class="switch-input" id="region_seeding" type="checkbox" name="region_seeding" checked>
+      <label class="switch-paddle" for="region_seeding">
+        <span class="show-for-sr">Region seeding</span>
+        <span class="switch-active" aria-hidden="true">On</span>
+        <span class="switch-inactive" aria-hidden="true">Off</span>
+      </label>
+    </div>
+  </div>
+  <div class="medium-3 columns">
+    <label>Prefix names by region</label>
+    <div class="switch">
+      <input class="switch-input" id="region_prefix" type="checkbox" name="region_prefix" checked>
+      <label class="switch-paddle" for="region_prefix">
+        <span class="show-for-sr">Prefix names by region</span>
+        <span class="switch-active" aria-hidden="true">On</span>
+        <span class="switch-inactive" aria-hidden="true">Off</span>
+      </label>
+    </div>
+  </div>
+  <div class="medium-3 columns">
+    <label for="default_region">Default region</label>
+    <input type="text" id="default_region">
+  </div>
+  <div class="medium-3 columns">
+    <label for="default_region">Delimiter</label>
+    <select type="text" id="delimiter" value="tab">
+      <option value="tab">
+      <option value=",">
+      <option value=".">
+      <option value=" ">
+    </select>
+  </div>
+</div>
+
+</div>
+
+<div class="row">
+  <div class="medium-12 columns">
+    <label for="InputPlayerData">Players - <i>Name, Region, Seed</i></label>
+    <textarea id="InputPlayerData" rows="5" cols="50" tabindex="7"></textarea>
+  </div>
+</div>
+
+<div class="row">
+  <div class="small-12 columns">
+    <input type="button" class="button" value="Generate Bracket Seeds" onclick="SeedPlayers('delimiter', 'default_region', 'min_pools', 'max_pool_size', 'region_seeding', 'region_prefix', 'InputPlayerData', 'RegionWarning', 'Output', 'Matchups', 'RegionCounts', 'SeedOrder', 'Alphabetical', 'ChallongeInfo', 'ChallongeData', 'Challonge')" tabindex="8">
+  </div>
+</div>
+
 </form>
 
 </section>
 
 
 <section style="display:none" id="Output">
-<h2>Pool Assignments</h2>
-<h3>Match-Ups</h3>
-<p id="RegionWarning"></p>
-<div id="Matchups"></div>
-<h3>Region Counts</h3>
-<div id="RegionCounts"></div>
-<h3>Players by Seed</h3>
-<div id="SeedOrder"></div>
-<h3>Players by Region & Name</h3>
-<div id="Alphabetical"></div>
+<h3>Pool Assignments</h3>
+
+<ul class="accordion" data-accordion role="tablist" data-allow-all-closed="true">
+  <li class="accordion-item is-active">
+    <a href="#panelMatchUps" role="tab" class="accordion-title" id="panelMatchUps-heading" aria-controls="panelMatchUps"><h4>Match-ups</h4></a>
+    <!-- The content pane needs an ID that matches the above href, role="tabpanel", data-tab-content, and aria-labelledby. -->
+    <div id="panelMatchUps" class="accordion-content" role="tabpanel" data-tab-content aria-labelledby="panelMatchUps-heading">
+      <p id="RegionWarning"></p>
+      <div id="Matchups"></div>
+    </div>
+  </li>
+  <li class="accordion-item">
+    <a href="#panelRegionCounts" role="tab" class="accordion-title" id="panelRegionCounts-heading" aria-controls="panelRegionCounts"><h4>Region counts</h4></a>
+    <!-- The content pane needs an ID that matches the above href, role="tabpanel", data-tab-content, and aria-labelledby. -->
+    <div id="panelRegionCounts" class="accordion-content" role="tabpanel" data-tab-content aria-labelledby="panelRegionCounts-heading">
+      <div id="RegionCounts"></div>
+    </div>
+  </li>
+  <li class="accordion-item">
+    <a href="#panelPlayersBySeed" role="tab" class="accordion-title" id="panelPlayersBySeed-heading" aria-controls="panelPlayersBySeed"><h4>Players by seed</h4></a>
+    <!-- The content pane needs an ID that matches the above href, role="tabpanel", data-tab-content, and aria-labelledby. -->
+    <div id="panelPlayersBySeed" class="accordion-content" role="tabpanel" data-tab-content aria-labelledby="panelPlayersBySeed-heading">
+      <div id="SeedOrder"></div>
+    </div>
+  </li>
+  <li class="accordion-item">
+    <a href="#panelPlayersByRegion" role="tab" class="accordion-title" id="panelPlayersByRegion-heading" aria-controls="panelPlayersByRegion"><h4>Players by region &amp; name</h4></a>
+    <!-- The content pane needs an ID that matches the above href, role="tabpanel", data-tab-content, and aria-labelledby. -->
+    <div id="panelPlayersByRegion" class="accordion-content" role="tabpanel" data-tab-content aria-labelledby="panelPlayersByRegion-heading">
+      <div id="Alphabetical"></div>
+    </div>
+  </li>
+</ul>
+
+
 </section>
 
 
 <section style="display:none" id="Challonge">
-<h2>Challonge Data</h2>
+<h3>Challonge Data</h3>
 <p id="ChallongeInfo"></p>
-<p ><i>Click <b>"Add in Bulk"</b> in your Challonge bracket then copy and paste the text bellow into Challonge.</i></p>
-<textarea id="ChallongeData" rows="30" cols="50" tabindex="9" readonly></textarea>
+<textarea id="ChallongeData" rows="5" cols="50" tabindex="9" readonly></textarea>
 </section>
 
 
@@ -138,11 +170,26 @@
 <p id="DEBUG3"></p>
 </section>
 
-<footer>
-<p>&copy; 2015 OzHadou. All rights reserved.</p>
-</footer>
+</div>
+
+<footer class="footer" role="contentinfo">
+
+      <!-- copyright -->
+      <p class="copyright">
+        <p>
+        OzHadou - Australia's fighting game community</p>
+        <p>&copy; OzHadou 2015. All rights reserved.</p>
+      </p>
+      <!-- /copyright -->
+
+    </footer>
 
 <script type="text/javascript" src="bsg.js"></script>
+<script>
+      $(document).foundation();
+
+    </script>
+
 
 </body>
 </html>
