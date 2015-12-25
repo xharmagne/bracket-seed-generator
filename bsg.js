@@ -482,14 +482,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    SeedAddressPool = BuildBracketSeedValues(PoolSize);
    PoolRegionCounts = Initialise2DArray(n_regions, n_pools, 0);
    // Table headers.
-   str_Matchups = "<table class=\"bracket\"><thead><tr>";
-   for (i = 0; i < n_pools; i++) {
-      str_Matchups = str_Matchups.concat("<th>Pool ", i + 1, "</th>");
-   } // end for i
+   str_Matchups = "<div class=\"bracket row\">";
    // Tables of players for each pool.
-   str_Matchups = str_Matchups.concat("</tr></thead><tbody><tr>");
    for (i = 0; i < n_pools; i++) {
-      str_Matchups = str_Matchups.concat("<td><table class=\"pool\">")
+     var poolNumber = i + 1;
+     var endClass = poolNumber == n_pools ? "end" : "";
+      str_Matchups = str_Matchups.concat("<div class=\"medium-4 large-3 columns " + endClass + "\"><h5>Pool " + poolNumber + "</h5><table class=\"pool\">")
       for (j = 0; j < PoolSize; j++) {
          m  = SeedIDsPerPool[j][i];
          str_tr_class = "<tr class=\"match_bottom\">";
@@ -514,21 +512,21 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 
          str_Matchups = str_Matchups.concat(str_tr_class);
 
-         str_Matchups = str_Matchups.concat(str_td_class, SeedAddressPool[j], ")</td>", str_td_class);
+         str_Matchups = str_Matchups.concat(str_td_class, SeedAddressPool[j], "</td>", str_td_class);
          if (m < 0) {
             str_Matchups = str_Matchups.concat("</td><td>---</td><td>");
          } else {
             PoolRegionCounts[PlayerRegionID[m]][i] = PoolRegionCounts[PlayerRegionID[m]][i] + 1;
-            str_Matchups = str_Matchups.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
+            str_Matchups = str_Matchups.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
             if (PlayerRank[m] <= MaxRank) {
                str_Matchups = str_Matchups.concat("(", PlayerRank[m], ")");
             } // end if PlayerRank
          }// end if else
       str_Matchups = str_Matchups.concat("</td></tr>");
       } // end for j
-   str_Matchups = str_Matchups.concat("</table></td>");
+   str_Matchups = str_Matchups.concat("</table></div>");
    } // end for i
-   str_Matchups = str_Matchups.concat("</tr></tbody></table>");
+   str_Matchups = str_Matchups.concat("</div>");
 
    Row_Sums = InitialiseArray(n_regions + 1, 1, 0);
    Col_Sums = InitialiseArray(n_pools, 1, 0);
@@ -567,14 +565,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    PlayerPoolSeed = InitialiseArray(n_players, 1, 0);
 
    // Table headers.
-   str_SeedOrder = "<table class=\"bracket\"><thead><tr>";
-   for (i = 0; i < n_pools; i++) {
-      str_SeedOrder = str_SeedOrder.concat("<th>Pool ", i + 1, "</th>");
-   } // end for i
+   str_SeedOrder = "<div class=\"bracket row\">";
    // Tables of players for each pool.
-   str_SeedOrder = str_SeedOrder.concat("</tr></thead><tbody><tr>");
    for (i = 0; i < n_pools; i++) {
-      str_SeedOrder = str_SeedOrder.concat("<td><table class=\"pool\">")
+     var poolNumber = i + 1;
+     var endClass = poolNumber == n_pools ? "end" : "";
+      str_SeedOrder = str_SeedOrder.concat("<div class=\"medium-4 large-3 columns " + endClass + "\"><h5>Pool " + poolNumber + "</h5><table class=\"pool\">")
       n = 0;
       for (j = 0; j < PoolSize; j++) {
          k = SeedAddressPool[j];
@@ -586,8 +582,8 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_SeedOrder = str_SeedOrder.concat("<tr>");
             // Storing pool seed for the current player for use in alphabetical order display.
             PlayerPoolSeed[m] = j + 1;
-            str_SeedOrder = str_SeedOrder.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);
-            str_SeedOrder = str_SeedOrder.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
+            str_SeedOrder = str_SeedOrder.concat(str_td_class, PlayerPoolSeed[m], "</td>", str_td_class);
+            str_SeedOrder = str_SeedOrder.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
 
             AlphabeticalOrder[j][i] = "[";
             AlphabeticalOrder[j][i] = AlphabeticalOrder[j][i].concat(PlayerRegion[m], "] ", PlayerName[m]);
@@ -602,9 +598,9 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    if (Math.ceil(n_players / n_pools) > n) {
       str_SeedOrder = str_SeedOrder.concat("<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
    } // end if
-   str_SeedOrder = str_SeedOrder.concat("</table></td>");
+   str_SeedOrder = str_SeedOrder.concat("</table></div>");
    } // end for i
-   str_SeedOrder = str_SeedOrder.concat("</tr></tbody></table>");
+   str_SeedOrder = str_SeedOrder.concat("</div>");
 
 
    // Displaying players in alphabetical order (region name then player name).
@@ -634,14 +630,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    } // end for i
 
    // Table headers.
-   str_Alphabetical = "<table class=\"bracket\"><thead><tr>";
-   for (i = 0; i < n_pools; i++) {
-      str_Alphabetical = str_Alphabetical.concat("<th>Pool ", i + 1, "</th>");
-   } // end for i
+   str_Alphabetical = "<div class=\"bracket row\">";
    // Tables of players for each pool.
-   str_Alphabetical = str_Alphabetical.concat("</tr></thead><tbody><tr>");
    for (i = 0; i < n_pools; i++) {
-      str_Alphabetical = str_Alphabetical.concat("<td><table class=\"pool\">")
+     var poolNumber = i + 1;
+     var endClass = poolNumber == n_pools ? "end" : "";
+      str_Alphabetical = str_Alphabetical.concat("<div class=\"medium-4 large-3 columns " + endClass + "\"><h5>Pool " + poolNumber + "</h5><table class=\"pool\">")
       n = 0;
       for (j = 0; j < AlphabeticalOrder.length; j++) {
          m  = PlayerRegionName.indexOf(AlphabeticalOrder[j][i]);
@@ -651,8 +645,8 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");
             str_Alphabetical = str_Alphabetical.concat("<tr>");
 
-            str_Alphabetical = str_Alphabetical.concat(str_td_class, PlayerPoolSeed[m], ")</td>", str_td_class);
-            str_Alphabetical = str_Alphabetical.concat("[", PlayerRegion[m], "]</td>", str_td_class, PlayerName[m], "</td>", str_td_class);
+            str_Alphabetical = str_Alphabetical.concat(str_td_class, PlayerPoolSeed[m], "</td>", str_td_class);
+            str_Alphabetical = str_Alphabetical.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
 
             if (PlayerRank[m] <= MaxRank) {
                str_Alphabetical = str_Alphabetical.concat("(", PlayerRank[m], ")");
@@ -665,9 +659,9 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
       for (j = 0; j < n; j++) {
          str_Alphabetical = str_Alphabetical.concat("<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>");
       } // end for j
-      str_Alphabetical = str_Alphabetical.concat("</table></td>");
+      str_Alphabetical = str_Alphabetical.concat("</table></div>");
    } // end for i
-   str_Alphabetical = str_Alphabetical.concat("</tr></tbody></table>");
+   str_Alphabetical = str_Alphabetical.concat("</div>");
 
 
    // Providing directions for setting up pools in Challonge.
