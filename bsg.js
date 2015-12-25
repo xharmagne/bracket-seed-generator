@@ -2,6 +2,10 @@ $(document).ready(function() {
   $("#ChallongeData").focus(function() {
     $(this).select();
   });
+
+  //$("#InputPlayerData").val("Genxa,NSW,1\r\nMPK | Hydeman,NSW,\r\ntoshin,NSW,\r\nGoodpart,NSW,2\r\nSaikyobatsujin,NSW,\r\nx5_FithAlucard,NSW,\r\nfkn.VittySMAYSH,VIC,\r\nMuttons,VIC,2\r\nFlying Dutchman,QLD,2\r\nManySpice,QLD,\r\nBurnoutFighter,VIC,1\r\nNick,NSW,\r\nMike Hawke,NSW,\r\n[~DTC~],NSW,\r\nFergus,NSW,\r\nCrook3d,NSW,\r\nDAILOU,NSW,1\r\nUNSWFGC | Stream Monsters,NSW,\r\nDario,VIC,\r\nUNSWFGC | Audacity,NSW,\r\nUNSWFGC | Victor,NSW,\r\nVlade,ACT,2\r\njaunty,NSW,2\r\nSpoony,VIC,\r\nPercadu,ACT,\r\nAlexK,NSW,2\r\ndustinabalos,NSW,\r\ndavidabalos,NSW,\r\nEJ | Aurelius,NSW,\r\nMadenka,NSW,\r\nOzz1m,NSW,\r\nGerry,NSW,\r\nFalco,SA,1\r\nTrickster Foxy,NSW,\r\nyangrrr,VIC,\r\nPNS_SHOGUN,ACT,2\r\nATB|CoolzHAMYOLO,WA,2\r\nYohei,NSW,1\r\nfkn.Rossco,VIC,\r\nfkn.P33M4N,QLD,\r\nLUVPERTHGC,NSW,\r\nnNinetailZz,QLD,\r\nBetterpart,NSW,\r\nx5_Baxter,QLD,2\r\nMarthicus,VIC,\r\nThinkovme,PNG,\r\nIce,PNG,\r\nRenzokuken,NSW,\r\nSpaceghost,NSW,1\r\nGoBack | Brownman,VIC,\r\nArnold Desu,NSW,1\r\nMohtar,NSW,\r\nbksama,NSW,2\r\nKenshine,NSW,\r\nmaxsze,NSW,\r\nNiah,NSW,2\r\nMooseking,SA,\r\nNO3SCAP3E,NSW,\r\nIf I Was King,NSW,1\r\nON | Colonov,QLD,1\r\nRobby Berape'nem,SA,\r\nAtomic,NSW,\r\nUNSWFGC | Ichijin,NSW,\r\ncrotchpuncha,NSW,\r\nKimpee,NSW,\r\nPrincess Harom,NSW,\r\nKYUUBI MODE au,NSW,2\r\nSalt King,NSW,\r\nLaozer,NSW,\r\nTony,NSW,\r\nPresto,NSW,2\r\nFKN KING,VIC,2\r\nSpasian,NSW,\r\nFangedbeast,NSW,\r\nRiskyBusiness,NSW,\r\n");
+  //SeedPlayers('delimiter', 'default_region', 'min_pools', 'max_pool_size', 'region_seeding', 'region_prefix', 'InputPlayerData', 'RegionWarning', 'Output', 'Matchups', 'RegionCounts', 'SeedOrder', 'Alphabetical', 'ChallongeInfo', 'ChallongeData', 'Challonge');
+
 });
 
 
@@ -531,11 +535,11 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    Row_Sums = InitialiseArray(n_regions + 1, 1, 0);
    Col_Sums = InitialiseArray(n_pools, 1, 0);
 
-   str_RegionCounts = "<table class=\"region\"><thead><tr><th>Region</th>";
+   str_RegionCounts = "<div class=\"row\"><div class=\"medium-8 large-6 columns end\"><table class=\"region\"><thead><tr><th>Region</th>";
    for (i = 0; i < n_pools; i++) {
       str_RegionCounts = str_RegionCounts.concat("<th>Pool ", i + 1, "</th>");
    } // end for i
-   str_RegionCounts = str_RegionCounts.concat("<th>Totals</th></tr>");
+   str_RegionCounts = str_RegionCounts.concat("<th>Totals</th></tr></thead>");
 
    for (i = 0; i < n_regions; i++) {
       str_td_class = "<td class=\"rgn";
@@ -554,7 +558,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    for (j = 0; j < n_pools; j++) {
          str_RegionCounts = str_RegionCounts.concat("<td>", Col_Sums[j], "</td>");
       } //end for j
-   str_RegionCounts = str_RegionCounts.concat("<td>", Row_Sums[n_regions], "</td></tr></table>");
+   str_RegionCounts = str_RegionCounts.concat("<td>", Row_Sums[n_regions], "</td></tr></table></div></div>");
 
 
    // Displaying players in pool seed order. Also stores player names (with region prefixes) for
@@ -978,5 +982,5 @@ function toggleOptions() {
 }
 
 function scrollToElement(id) {
-  $("html,body").animate({scrollTop:$("#"+id).offset().top},"500");
+  $("html,body").animate({scrollTop:$("#"+id).offset().top - 112},"500");
 }
