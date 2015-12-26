@@ -64,7 +64,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    // ***** End declaring variables. *****
 
    // Reading in the various parameters from the html form elements.
-   var delimiter = document.getElementById(id_delimiter).value;
+   var delimiter_val = document.getElementById(id_delimiter).value;
    var default_region = document.getElementById(id_default_region).value;
    var min_pools = document.getElementById(id_min_pools).value;
    var max_pools_size = document.getElementById(id_max_pool_size).value;
@@ -87,10 +87,17 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
 
    // Setting the tab delimiter character
    // Either tab or comma - guess based on contents of first line.
-   delimiter = ",";
-   if (DataArray[i].indexOf(delimiter) < 0) {
-      delimiter = "\t";
-   } // end if delimiter
+   var delimiter = ",";
+   if (delimiter_val == "auto") {
+
+     if (DataArray[i].indexOf(delimiter) < 0) {
+        delimiter = "\t";
+     } // end if delimiter
+   } else if (delimiter_val == "tab") {
+     delimiter = "\t";
+   } else {
+     delimiter = delimiter_val;
+   }
 
    // Looping through the data and splitting it into three entries: Name, Region, Rank.
    for (i = 0; i < DataArray.length; i++) {
