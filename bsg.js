@@ -36,7 +36,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    var n_players = 0;
    var n_regions = 0;
    var MaxRank = 0;
-   var MinRank = 30000;
+   var MinRank = -1;
    var r_players = 0;
    var rFirstSeed = 0;
    var rTotalPlayers = 0;
@@ -521,7 +521,8 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_Matchups = str_Matchups.concat("</td><td>---</td><td>");
          } else {
             PoolRegionCounts[PlayerRegionID[m]][i] = PoolRegionCounts[PlayerRegionID[m]][i] + 1;
-            str_Matchups = str_Matchups.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
+            var playerRegion = bln_region_prefix && PlayerRegion[m] ? "[" + PlayerRegion[m] + "]" : "";
+            str_Matchups = str_Matchups.concat(playerRegion, "</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
             if (PlayerRank[m] <= MaxRank) {
                str_Matchups = str_Matchups.concat("(", PlayerRank[m], ")");
             } // end if PlayerRank
@@ -586,11 +587,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             str_SeedOrder = str_SeedOrder.concat("<tr>");
             // Storing pool seed for the current player for use in alphabetical order display.
             PlayerPoolSeed[m] = j + 1;
+            var playerRegion = bln_region_prefix && PlayerRegion[m] ? "[" + PlayerRegion[m] + "]" : "";
             str_SeedOrder = str_SeedOrder.concat(str_td_class, PlayerPoolSeed[m], "</td>", str_td_class);
-            str_SeedOrder = str_SeedOrder.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
+            str_SeedOrder = str_SeedOrder.concat(playerRegion + "</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
 
-            AlphabeticalOrder[j][i] = "[";
-            AlphabeticalOrder[j][i] = AlphabeticalOrder[j][i].concat(PlayerRegion[m], "] ", PlayerName[m]);
+            AlphabeticalOrder[j][i] = "[" + PlayerRegion[m] + "]";
+            AlphabeticalOrder[j][i] = AlphabeticalOrder[j][i].concat(" ", PlayerName[m]);
 
             if (PlayerRank[m] <= MaxRank) {
                str_SeedOrder = str_SeedOrder.concat("(", PlayerRank[m], ")");
@@ -614,8 +616,9 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
       for (j = 0; j < PoolSize; j++) {
          m = SeedIDsPerPool[j][i];
          if (m >= 0) {
-            PlayerRegionName[m] = "[";
-            PlayerRegionName[m] = PlayerRegionName[m].concat(PlayerRegion[m], "] ", PlayerName[m]);
+           var playerRegion = "[" + PlayerRegion[m] + "] ";
+            PlayerRegionName[m] = playerRegion;
+            PlayerRegionName[m] = PlayerRegionName[m].concat(PlayerName[m]);
          } // end if m
       } // end for j
    } // end for i
@@ -647,10 +650,12 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
          if (m >= 0) {
             str_td_class = "<td class=\"rgn";
             str_td_class = str_td_class.concat(PlayerRegionID[m], "\">");
-            str_Alphabetical = str_Alphabetical.concat("<tr>");
 
+            var playerRegion = bln_region_prefix && PlayerRegion[m] ? "[" + PlayerRegion[m] + "]" : "";
+
+            str_Alphabetical = str_Alphabetical.concat("<tr>");
             str_Alphabetical = str_Alphabetical.concat(str_td_class, PlayerPoolSeed[m], "</td>", str_td_class);
-            str_Alphabetical = str_Alphabetical.concat("[", PlayerRegion[m], "]</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
+            str_Alphabetical = str_Alphabetical.concat(playerRegion, "</td>", str_td_class, "<span title=\"" + PlayerName[m] + "\">", PlayerName[m], "</span></td>", str_td_class);
 
             if (PlayerRank[m] <= MaxRank) {
                str_Alphabetical = str_Alphabetical.concat("(", PlayerRank[m], ")");
@@ -686,7 +691,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
          m  = SeedIDsPerPool[k-1][i];
 
          if (m >= 0) {
-            if (bln_region_prefix == true) {
+            if (bln_region_prefix && PlayerRegion[m]) {
                str_ChallongeData = str_ChallongeData.concat("[", PlayerRegion[m], "] ");
             } // end if bln_region_prefix
             str_ChallongeData = str_ChallongeData.concat(PlayerName[m], "\n");
@@ -698,6 +703,11 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    } // end for i
 
 
+   if (str_RegionErrors) {
+     $("#" + id_RegionWarning).parent().show();
+   } else {
+     $("#" + id_RegionWarning).parent().hide();
+   }
 
    document.getElementById(id_RegionWarning).innerHTML = str_RegionErrors;
 
