@@ -545,7 +545,7 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
 
    var regionCountsCols = "medium-4 large-3";
    if (n_pools > 4) {
-     regionCountsCols = "medium-8 large-6";
+     regionCountsCols = "medium-6";
    } else if (n_pools > 2) {
      regionCountsCols = "medium-6 large-4";
    }
