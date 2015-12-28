@@ -544,41 +544,70 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    Col_Sums = InitialiseArray(n_pools, 1, 0);
 
    var regionCountsCols = "medium-4 large-3";
-   if (n_pools > 8) {
-     regionCountsCols = "small-12";
-   } else if (n_pools > 4) {
+   if (n_pools > 4) {
      regionCountsCols = "medium-8 large-6";
    } else if (n_pools > 2) {
      regionCountsCols = "medium-6 large-4";
    }
 
-   str_RegionCounts = "<div class=\"row\"><div class=\"" + regionCountsCols + " columns end\"><table class=\"region\"><thead>"
-      + "<tr><th rowspan=\"2\">Region</th><th colspan=\"" + n_pools + "\">Pools</th><th rowspan=\"2\">Totals</th></tr>"
-      + "<tr>";
+   str_RegionCounts = "<div class=\"row\">";
 
-   for (i = 0; i < n_pools; i++) {
-      str_RegionCounts = str_RegionCounts.concat("<th>", i + 1, "</th>");
+   var numPoolGroupsForDisplay = Math.max(1, Math.floor(n_pools / 8));
+
+   for (g = 0; g < numPoolGroupsForDisplay; g++) {
+
+    var numPoolsInGroup = Math.min(n_pools, 8);
+    var firstPoolInGroup = g * 8;
+    var lastPoolInGroup = Math.min(n_pools, (g + 1) * 8);
+    var isFirstGroup = g == 0;
+    var isLastGroup = g == numPoolGroupsForDisplay - 1;
+
+    str_RegionCounts += "<div class=\"" + regionCountsCols
+       + " " + (!(isFirstGroup && isLastGroup) ? "split-region-counts" : "")
+       + " region-count-container columns end\"><table class=\"region\"><thead>"
+       + "<tr><th rowspan=\"2\" class=\"region-header\">Region</th><th colspan=\"" + numPoolsInGroup + "\">Pools</th>"
+       + (isLastGroup ? "<th rowspan=\"2\">Totals</th>" : "")
+       + "</tr><tr>";
+
+     for (i = firstPoolInGroup; i < lastPoolInGroup; i++) {
+        str_RegionCounts = str_RegionCounts.concat("<th>", i + 1, "</th>");
+     } // end for i
+     str_RegionCounts = str_RegionCounts.concat("</tr></thead>");
+
+     for (i = 0; i < n_regions; i++) {
+        str_td_class = "<td class=\"rgn";
+        str_td_class = str_td_class.concat(i, "\">");
+        str_RegionCounts = str_RegionCounts.concat("<tr>", str_td_class, RegionList[i], "</td>");
+        for (j = firstPoolInGroup; j < lastPoolInGroup; j++) {
+           str_RegionCounts = str_RegionCounts.concat(str_td_class, PoolRegionCounts[i][j], "</td>");
+           Row_Sums[i] = Row_Sums[i] + PoolRegionCounts[i][j];
+           Col_Sums[j] = Col_Sums[j] + PoolRegionCounts[i][j];
+        } //end for j
+
+        if (isLastGroup) {
+          str_RegionCounts += str_td_class + Row_Sums[i] + "</td>";
+        }
+
+        str_RegionCounts += "</tr>";
+
+        Row_Sums[n_regions] = Row_Sums[n_regions] + Row_Sums[i];
+     } // end for i
+
+      str_RegionCounts = str_RegionCounts.concat("<tr><td><b>Totals</b></td>");
+      for (j = firstPoolInGroup; j < lastPoolInGroup; j++) {
+            str_RegionCounts = str_RegionCounts.concat("<td>", Col_Sums[j], "</td>");
+         } //end for j
+
+      if (isLastGroup) {
+        str_RegionCounts += "<td>" + Row_Sums[n_regions] + "</td>";
+      }
+
+      str_RegionCounts += "</tr></table></div>";
+
+
    } // end for i
-   str_RegionCounts = str_RegionCounts.concat("</tr></thead>");
 
-   for (i = 0; i < n_regions; i++) {
-      str_td_class = "<td class=\"rgn";
-      str_td_class = str_td_class.concat(i, "\">");
-      str_RegionCounts = str_RegionCounts.concat("<tr>", str_td_class, RegionList[i], "</td>");
-      for (j = 0; j < n_pools; j++) {
-         str_RegionCounts = str_RegionCounts.concat(str_td_class, PoolRegionCounts[i][j], "</td>");
-         Row_Sums[i] = Row_Sums[i] + PoolRegionCounts[i][j];
-         Col_Sums[j] = Col_Sums[j] + PoolRegionCounts[i][j];
-      } //end for j
-      str_RegionCounts = str_RegionCounts.concat(str_td_class, Row_Sums[i], "</td></tr>");
-      Row_Sums[n_regions] = Row_Sums[n_regions] + Row_Sums[i];
-   } // end for i
-
-   str_RegionCounts = str_RegionCounts.concat("<tr><td><b>Totals</b></td>");
-   for (j = 0; j < n_pools; j++) {
-         str_RegionCounts = str_RegionCounts.concat("<td>", Col_Sums[j], "</td>");
-      } //end for j
-   str_RegionCounts = str_RegionCounts.concat("<td>", Row_Sums[n_regions], "</td></tr></table></div></div>");
+   str_RegionCounts += "</div>";
 
 
    // Displaying players in pool seed order. Also stores player names (with region prefixes) for
