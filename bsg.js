@@ -543,11 +543,23 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
    Row_Sums = InitialiseArray(n_regions + 1, 1, 0);
    Col_Sums = InitialiseArray(n_pools, 1, 0);
 
-   str_RegionCounts = "<div class=\"row\"><div class=\"medium-8 large-6 columns end\"><table class=\"region\"><thead><tr><th>Region</th>";
+   var regionCountsCols = "medium-4 large-3";
+   if (n_pools > 8) {
+     regionCountsCols = "small-12";
+   } else if (n_pools > 4) {
+     regionCountsCols = "medium-8 large-6";
+   } else if (n_pools > 2) {
+     regionCountsCols = "medium-6 large-4";
+   }
+
+   str_RegionCounts = "<div class=\"row\"><div class=\"" + regionCountsCols + " columns end\"><table class=\"region\"><thead>"
+      + "<tr><th rowspan=\"2\">Region</th><th colspan=\"" + n_pools + "\">Pools</th><th rowspan=\"2\">Totals</th></tr>"
+      + "<tr>";
+
    for (i = 0; i < n_pools; i++) {
-      str_RegionCounts = str_RegionCounts.concat("<th>Pool ", i + 1, "</th>");
+      str_RegionCounts = str_RegionCounts.concat("<th>", i + 1, "</th>");
    } // end for i
-   str_RegionCounts = str_RegionCounts.concat("<th>Totals</th></tr></thead>");
+   str_RegionCounts = str_RegionCounts.concat("</tr></thead>");
 
    for (i = 0; i < n_regions; i++) {
       str_td_class = "<td class=\"rgn";
