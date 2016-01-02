@@ -1,6 +1,10 @@
+Math.log2 = Math.log2 || function(x) { return Math.log(x) / Math.log(2); };
+
 $(document).ready(function() {
-  $("#ChallongeData").focus(function() {
-    $(this).select();
+
+
+  $("#btnTestData").click(function() {
+      $("#InputPlayerData").val("Genxa,NSW,1\r\nMPK | Hydeman,NSW,\r\ntoshin,NSW,\r\nGoodpart,NSW,2\r\nSaikyobatsujin,NSW,\r\nx5_FithAlucard,NSW,\r\nfkn.VittySMAYSH,VIC,\r\nMuttons,VIC,2\r\nFlying Dutchman,QLD,2\r\nManySpice,QLD,\r\nBurnoutFighter,VIC,1\r\nNick,NSW,\r\nMike Hawke,NSW,\r\n[~DTC~],NSW,\r\nFergus,NSW,\r\nCrook3d,NSW,\r\nDAILOU,NSW,1\r\nUNSWFGC | Stream Monsters,NSW,\r\nDario,VIC,\r\nUNSWFGC | Audacity,NSW,\r\nUNSWFGC | Victor,NSW,\r\nVlade,ACT,2\r\njaunty,NSW,2\r\nSpoony,VIC,\r\nPercadu,ACT,\r\nAlexK,NSW,2\r\ndustinabalos,NSW,\r\ndavidabalos,NSW,\r\nEJ | Aurelius,NSW,\r\nMadenka,NSW,\r\nOzz1m,NSW,\r\nGerry,NSW,\r\nFalco,SA,1\r\nTrickster Foxy,NSW,\r\nyangrrr,VIC,\r\nPNS_SHOGUN,ACT,2\r\nATB|CoolzHAMYOLO,WA,2\r\nYohei,NSW,1\r\nfkn.Rossco,VIC,\r\nfkn.P33M4N,QLD,\r\nLUVPERTHGC,NSW,\r\nnNinetailZz,QLD,\r\nBetterpart,NSW,\r\nx5_Baxter,QLD,2\r\nMarthicus,VIC,\r\nThinkovme,PNG,\r\nIce,PNG,\r\nRenzokuken,NSW,\r\nSpaceghost,NSW,1\r\nGoBack | Brownman,VIC,\r\nArnold Desu,NSW,1\r\nMohtar,NSW,\r\nbksama,NSW,2\r\nKenshine,NSW,\r\nmaxsze,NSW,\r\nNiah,NSW,2\r\nMooseking,SA,\r\nNO3SCAP3E,NSW,\r\nIf I Was King,NSW,1\r\nON | Colonov,QLD,1\r\nRobby Berape'nem,SA,\r\nAtomic,NSW,\r\nUNSWFGC | Ichijin,NSW,\r\ncrotchpuncha,NSW,\r\nKimpee,NSW,\r\nPrincess Harom,NSW,\r\nKYUUBI MODE au,NSW,2\r\nSalt King,NSW,\r\nLaozer,NSW,\r\nTony,NSW,\r\nPresto,NSW,2\r\nFKN KING,VIC,2\r\nSpasian,NSW,\r\nFangedbeast,NSW,\r\nRiskyBusiness,NSW,\r\n");
   });
 
   //$("#InputPlayerData").val("Genxa,NSW,1\r\nMPK | Hydeman,NSW,\r\ntoshin,NSW,\r\nGoodpart,NSW,2\r\nSaikyobatsujin,NSW,\r\nx5_FithAlucard,NSW,\r\nfkn.VittySMAYSH,VIC,\r\nMuttons,VIC,2\r\nFlying Dutchman,QLD,2\r\nManySpice,QLD,\r\nBurnoutFighter,VIC,1\r\nNick,NSW,\r\nMike Hawke,NSW,\r\n[~DTC~],NSW,\r\nFergus,NSW,\r\nCrook3d,NSW,\r\nDAILOU,NSW,1\r\nUNSWFGC | Stream Monsters,NSW,\r\nDario,VIC,\r\nUNSWFGC | Audacity,NSW,\r\nUNSWFGC | Victor,NSW,\r\nVlade,ACT,2\r\njaunty,NSW,2\r\nSpoony,VIC,\r\nPercadu,ACT,\r\nAlexK,NSW,2\r\ndustinabalos,NSW,\r\ndavidabalos,NSW,\r\nEJ | Aurelius,NSW,\r\nMadenka,NSW,\r\nOzz1m,NSW,\r\nGerry,NSW,\r\nFalco,SA,1\r\nTrickster Foxy,NSW,\r\nyangrrr,VIC,\r\nPNS_SHOGUN,ACT,2\r\nATB|CoolzHAMYOLO,WA,2\r\nYohei,NSW,1\r\nfkn.Rossco,VIC,\r\nfkn.P33M4N,QLD,\r\nLUVPERTHGC,NSW,\r\nnNinetailZz,QLD,\r\nBetterpart,NSW,\r\nx5_Baxter,QLD,2\r\nMarthicus,VIC,\r\nThinkovme,PNG,\r\nIce,PNG,\r\nRenzokuken,NSW,\r\nSpaceghost,NSW,1\r\nGoBack | Brownman,VIC,\r\nArnold Desu,NSW,1\r\nMohtar,NSW,\r\nbksama,NSW,2\r\nKenshine,NSW,\r\nmaxsze,NSW,\r\nNiah,NSW,2\r\nMooseking,SA,\r\nNO3SCAP3E,NSW,\r\nIf I Was King,NSW,1\r\nON | Colonov,QLD,1\r\nRobby Berape'nem,SA,\r\nAtomic,NSW,\r\nUNSWFGC | Ichijin,NSW,\r\ncrotchpuncha,NSW,\r\nKimpee,NSW,\r\nPrincess Harom,NSW,\r\nKYUUBI MODE au,NSW,2\r\nSalt King,NSW,\r\nLaozer,NSW,\r\nTony,NSW,\r\nPresto,NSW,2\r\nFKN KING,VIC,2\r\nSpasian,NSW,\r\nFangedbeast,NSW,\r\nRiskyBusiness,NSW,\r\n");
@@ -341,7 +345,7 @@ function SeedPlayers(id_delimiter, id_default_region, id_min_pools, id_max_pool_
    n_pools = min_pools;
    PoolSize = Math.ceil(Math.pow(2, Math.ceil(Math.log2(n_players / n_pools))));
 
-   if (max_pool_size != "NONE") {
+   if (max_pools_size != "NONE") {
       while (PoolSize > max_pools_size) {
          n_pools = Math.pow(2, Math.log2(n_pools) + 1);
          PoolSize = Math.ceil(Math.pow(2, Math.ceil(Math.log2(n_players / n_pools))));
@@ -742,14 +746,15 @@ function DisplayResults(n_regions, BracketSize, BracketLayers, n_players, Seeded
             if (bln_region_prefix && PlayerRegion[m]) {
                str_ChallongeData = str_ChallongeData.concat("[", PlayerRegion[m], "] ");
             } // end if bln_region_prefix
-            str_ChallongeData = str_ChallongeData.concat(PlayerName[m], "\n");
+            str_ChallongeData = str_ChallongeData + PlayerName[m] + "\r\n";
           } else {
             n = n + 1;
-            str_ChallongeData = str_ChallongeData.concat("Bye_", n, "\n");
+            str_ChallongeData = str_ChallongeData + "Bye_" + n + "\r\n";
           } // end if else
       } // end for j
    } // end for i
 
+   str_ChallongeData = str_ChallongeData.slice(0, -2);
 
    if (str_RegionErrors) {
      $("#" + id_RegionWarning).parent().show();

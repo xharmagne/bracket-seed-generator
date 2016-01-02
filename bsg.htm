@@ -102,7 +102,7 @@
 
 <div class="row">
   <div class="medium-12 columns">
-    <label for="InputPlayerData">Players - <i>Name, Region, Seed</i></label>
+    <label for="InputPlayerData">Players - <i>1 player per line - Name, Region, Seed</i>&nbsp;&nbsp;(&nbsp;<a id="btnTestData" href="#">Click here to use sample data</a>&nbsp;)</label>
     <textarea id="InputPlayerData" rows="5" cols="50" tabindex="7"></textarea>
   </div>
 </div>
@@ -164,7 +164,7 @@
 <section style="display:none" id="Challonge">
 <h3>Challonge Data</h3>
 <p id="ChallongeInfo"></p>
-<textarea id="ChallongeData" rows="5" cols="50" tabindex="9" readonly></textarea>
+<textarea id="ChallongeData" rows="5" cols="50" tabindex="9" readonly onmouseup="return false;" onclick='this.setSelectionRange(0,9999)'></textarea>
 </section>
 
 
